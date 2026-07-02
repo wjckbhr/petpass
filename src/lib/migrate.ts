@@ -1,9 +1,9 @@
-import pool from './db'
-import 'dotenv/config'
+import pool from "./db";
+import "dotenv/config";
 
 async function migrate() {
-  const client = await pool.connect()
-  
+  const client = await pool.connect();
+
   try {
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -30,6 +30,8 @@ async function migrate() {
         updated_at TIMESTAMP DEFAULT NOW()
       );
 
+ALTER TABLE animals ADD COLUMN IF NOT EXISTS color TEXT NOT NULL;
+
       CREATE TABLE IF NOT EXISTS health_records (
         id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
         type TEXT NOT NULL,
@@ -41,15 +43,15 @@ async function migrate() {
         added_by_id TEXT NOT NULL REFERENCES users(id),
         created_at TIMESTAMP DEFAULT NOW()
       );
-    `)
-    
-    console.log('✅ Tabele stworzone!')
+    `);
+
+    console.log("✅ Tabele stworzone!");
   } catch (error) {
-    console.error('❌ Błąd:', error)
+    console.error("❌ Błąd:", error);
   } finally {
-    client.release()
-    await pool.end()
+    client.release();
+    await pool.end();
   }
 }
 
-migrate()
+migrate();

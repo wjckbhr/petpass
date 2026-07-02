@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server"; // narzędzie do obsługi ządań i odpowiedzi
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import pool from "@/lib/db";
+import jwt from "jsonwebtoken"; // biblioteka do tworzenia i weryfikowania tokenów
+import pool from "@/lib/db"; // połączenie z bazą danych
 
 export async function POST(req: NextRequest) {
   try {

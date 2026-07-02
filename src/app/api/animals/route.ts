@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   try {
     const { name, type, breed, color, birthDate, identifier, identifierType } =
       await req.json();
-    const authHeader = req.headers.get("authorization");
+    const authHeader = req.headers.get("authorization"); // pobiera nagłówek authorization z żądania
     const token = authHeader?.split(" ")[1];
 
     if (!token) {
