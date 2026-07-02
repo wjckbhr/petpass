@@ -1,26 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import pool from "@/lib/db";
+import { verifyToken } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
     const { name, type, breed, color, birthDate, identifier, identifierType } =
       await req.json();
 
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const decoded = verifyToken(req);
 
-    if (!token) {
+    if (!decoded) {
       return NextResponse.json(
         { error: "Musisz być zalogowany" },
         { status: 401 },
       );
     }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-      id: string;
-      role: string;
-    };
 
     if (!name || !type || !color || !identifier || !identifierType) {
       return NextResponse.json(
